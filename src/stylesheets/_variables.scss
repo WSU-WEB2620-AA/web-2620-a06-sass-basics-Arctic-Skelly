@@ -1,0 +1,14 @@
+//Sass Modules
+@use 'sass:color';
+
+//Variables
+$white: #fff;
+$blue: #0d6efd;
+$gray: #333;
+$gray-transparent: rgba(255, 255, 255, .4);
+$black: rgba(0, 0, 0, .1);
+$border: 1px solid #303030;
+$width-percent: 100%;
+$width-px: 1200px;
+$only-bottom-margin: 0 0 2em 0;
+$weight: 300;

@@ -1,7 +1,13 @@
-// Your styles go here
+//Sass Modules
+@use 'sass:color';
+
+//Additional Files
+@use 'nav';
+@use 'variables';
+
 body {
   background: #202020 url('/images/footer-bg.jpg') repeat;
-  min-width: 1200px;
+  min-width: variables.$width-px;
   margin: 0;
   padding: 0;
 }
@@ -11,7 +17,7 @@ input,
 textarea,
 select {
   font-family: 'Roboto Condensed', sans-serif;
-  font-weight: 300;
+  font-weight: variables.$weight;
   font-size: 11pt;
   line-height: 1.75em;
 }
@@ -24,18 +30,14 @@ h5,
 h6 {
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 300;
-}
+  font-weight: variables.$weight;
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  color: inherit;
-  text-decoration: none;
+  &a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
+/*Could use list for so many selectors?*/
 
 strong,
 b {
@@ -49,7 +51,7 @@ i {
 }
 
 a {
-  color: #0d6efd;
+  color: variables.$blue;
 }
 
 sub {
@@ -76,37 +78,32 @@ dl,
 table {
   margin-bottom: 1em;
 }
+/*Could use list for so many selectors?*/
 
 header {
   margin-bottom: 2em;
   line-height: 1.7em;
-}
 
-header h2 {
-  font-size: 2.5em;
-}
-
-header .byline {
-  display: block;
-  margin: 0.5em 0 0 0;
-  padding: 0 0 0.5em 0;
-  text-transform: uppercase;
-  font-size: 1.4em;
+  & h2 {
+    font-size: 2.5em;
+  }
+  
+  & .byline {
+    display: block;
+    margin: 0.5em 0 0 0;
+    padding: 0 0 0.5em 0;
+    text-transform: uppercase;
+    font-size: 1.4em;
+  }
 }
 
 section,
 article {
   margin-bottom: 3em;
-}
 
-section > :last-child,
-article > :last-child {
-  margin-bottom: 0;
-}
-
-section:last-child,
-article:last-child {
-  margin-bottom: 0;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 blockquote {
@@ -121,41 +118,41 @@ footer {
 }
 
 .container {
-  width: 1200px;
+  width: variables.$width-px;
   margin-left: auto;
   margin-right: auto;
-}
 
-.container.small {
-  width: 900px;
-}
-
-.container.big {
-  width: 100%;
-  max-width: 1500px;
-  min-width: 1200px;
-}
-
-.row section,
-.row article {
-  margin-bottom: 0;
-}
-
-.row [class*='column-'] {
-  padding: 50px 0 0 50px;
-  float: left;
-  box-sizing: border-box;
+  &.small {
+    width: 900px;
+  }
+  
+  &.big {
+    width: variables.$width-percent;
+    max-width: 1500px;
+    min-width: variables.$width-px;
+  }
 }
 
 .row {
   margin-left: -50px;
-}
 
-.row:after {
-  content: '';
-  display: block;
-  clear: both;
-  height: 0;
+  & section,
+  & article {
+    margin-bottom: 0;
+  }
+
+  & [class*='column-'] {
+    padding: 50px 0 0 50px;
+    float: left;
+    box-sizing: border-box;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+  }
 }
 
 .column-1,
@@ -164,15 +161,28 @@ footer {
 .column-4,
 .column-5,
 .column-6,
-.column-7.column-8,
+.column-7,
+.column-8,
 .column-9,
 .column-10,
 .column-11,
 .column-12 {
-  width: 100%;
+  width: variables.$width-percent;
 }
+/*Could use list for so many selectors?*/
 
 @media all and (min-width: 576px) {
+  //Note: Loop isn't working as it should
+  @for $count from 1 through 12 {
+    $width: percentage(1 / $count);
+    .column-#{$count} {
+      width: variables.$width-percent;
+    }
+  }
+
+  /*Original code commented out for reference*/
+
+  /*
   .column-1 {
     width: 8.33333%;
   }
@@ -220,107 +230,108 @@ footer {
   .column-12 {
     width: 100%;
   }
+  */
 }
 
 .image {
   display: inline-block;
-}
 
-.image img {
-  display: block;
-  width: 100%;
-}
+  & img {
+    display: block;
+    width: variables.$width-percent;
+  }
+  
+  &.featured {
+    display: block;
+    width: variables.$width-percent;
+    margin: variables.$only-bottom-margin;
+  }
+  
+  &.full {
+    display: block;
+    width: variables.$width-percent;
+    margin-bottom: 2em;
+  }
+  
+  &.left {
+    float: left;
+    margin: 0 2em 2em 0;
+  }
+  
+  &.centered {
+    display: block;
+    margin: variables.$only-bottom-margin;
 
-.image.featured {
-  display: block;
-  width: 100%;
-  margin: 0 0 2em 0;
-}
-
-.image.full {
-  display: block;
-  width: 100%;
-  margin-bottom: 2em;
-}
-
-.image.left {
-  float: left;
-  margin: 0 2em 2em 0;
-}
-
-.image.centered {
-  display: block;
-  margin: 0 0 2em 0;
-}
-
-.image.centered img {
-  margin: 0 auto;
-  width: auto;
+    & img {
+      margin: 0 auto;
+      width: auto;
+    }
+  }
 }
 
 ul.default {
   margin: 0;
   padding: 0;
   list-style: none;
-}
 
-ul.default li {
+  & li {
   display: block;
   padding: 2em 0em 1.25em 0em;
-  border-top: 1px solid #303030;
-}
+  border-top: variables.$border;
 
-ul.default li:first-child {
-  padding-top: 0em;
-  border-top: none;
-}
+    &:first-child {
+      padding-top: 0em;
+      border-top: none;
+    }
+  }
 
-ul.default a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .5);
-}
+  & a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, .5);
 
-ul.default a:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 ul.style1 {
   margin: 0;
   padding: 0;
   list-style: none;
-}
 
-ul.style1 li {
-  padding: 0.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
+  & li {
+    padding: 0.60em 0em;
+    border-top: 1px solid;
+    border-color: variables.$black;
 
-ul.style1 li:first-child {
-  padding-top: 0;
-  border-top: 0;
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
 }
 
 ul.style2 {
   margin: 0;
   padding: 0;
   list-style: none;
-}
 
-ul.style2 li {
-  padding: 1.90em 0em 1.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
+  & li {
+    padding: 1.90em 0em 1.60em 0em;
+    border-top: 1px solid;
+    border-color: variables.$black;
 
-ul.style2 li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-ul.style2 img {
-  float: left;
-  padding-right: 1em;
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+  
+  & img {
+    float: left;
+    padding-right: 1em;
+  }
 }
 
 ul.style5 {
@@ -328,12 +339,12 @@ ul.style5 {
   margin: 0em 0em 1em 0em;
   padding: 0em;
   list-style: none;
-}
 
-ul.style5 li {
-  float: left;
-  padding: 0.25em 0.25em;
-  line-height: 0;
+  & li {
+    float: left;
+    padding: 0.25em 0.25em;
+    line-height: 0;
+  }
 }
 
 .button {
@@ -341,79 +352,42 @@ ul.style5 li {
   display: inline-block;
   margin-top: 0.5em;
   padding: 0.50em 1.5em;
-  background: #0d6efd;
+  background: variables.$blue;
   border-radius: 6px;
   text-decoration: none;
   text-transform: uppercase;
   font-size: 1.1em;
-  color: #FFF;
+  color: variables.$white;
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
   cursor: pointer;
-}
 
-.button:hover {
-  background: #0d6efd;
-  color: #FFF !important;
+  &:hover {
+    background: variables.$blue;
+    color: variables.$white !important;
+  }
 }
 
 .header {
   position: relative;
-  background: #FFF;
-}
+  background: variables.$white;
 
-.header .container {
-  position: relative;
-  padding: 4em 0em;
+  & .container {
+    position: relative;
+    padding: 4em 0em;
+  }
 }
 
 .logo {
   position: absolute;
   left: 0em;
   top: 3em;
-}
 
-.logo a {
-  display: block;
-  text-decoration: none;
-  font-size: 2.8em;
-  font-weight: 600;
-}
-
-.nav {
-  position: absolute;
-  right: 0em;
-  top: 2.2em;
-}
-
-.nav ul {
-  list-style-type: none;
-}
-
-.nav ul li {
-  float: left;
-}
-
-.nav ul li:last-child {
-  padding-right: 0;
-}
-
-.nav ul li a,
-.nav ul li span {
-  display: block;
-  margin-left: 0.7em;
-  padding: 0.80em 1.2em;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 1.1em;
-  outline: 0;
-  color: #333;
-}
-
-.nav li.active a {
-  background: #0d6efd;
-  border-radius: 5px;
-  color: #FFF;
+  & a {
+    display: block;
+    text-decoration: none;
+    font-size: 2.8em;
+    font-weight: 600;
+  }
 }
 
 .banner {
@@ -421,73 +395,75 @@ ul.style5 li {
   padding: 12em 0em;
   background: url('/images/banner.jpg') no-repeat center;
   background-size: cover;
-  color: #fff;
+  color: variables.$white;
 }
 
 .page {
   position: relative;
-  background: #fff;
+  background: variables.$white;
 }
 
 .main {
   border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .2);
+  border-color: variables.$black;
 }
 
 .sidebar header h2 {
   font-size: 1.6em;
 }
 
+/*Footer*/
+
 .footer {
   position: relative;
-  color: rgba(255, 255, 255, .4);
-}
+  color: variables.$gray-transparent;
 
-.footer h2 {
-  padding-bottom: 1.5em;
-  font-size: 1.6em;
-  color: #FFF;
-}
-
-.footer strong {
-  color: rgba(255, 255, 255, .7);
+  &h2 {
+    padding-bottom: 1.5em;
+    font-size: 1.6em;
+    color: variables.$white;
+  }
+  
+  &strong {
+    color: rgba(255, 255, 255, .7);
+  }
 }
 
 .copyright {
   position: relative;
   padding: 3em 0em;
-  border-top: 1px solid #303030;
+  border-top: variables.$border;
   letter-spacing: 1px;
   text-align: center;
-  color: rgba(255, 255, 255, .4);
-}
+  color: variables.$gray-transparent;
 
-.copyright a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .4) !important;
+  &a {
+    text-decoration: none;
+    color: variables.$gray-transparent !important;
+  }
 }
 
 .marketing {
   position: relative;
-}
 
-.marketing header h2 {
-  font-size: 1.6em;
+  & header h2 {
+    font-size: 1.6em;
+  }
 }
 
 .featured {
   position: relative;
-}
 
-.featured .divider {
-  border-bottom: 1px solid #303030;
-}
-
-.featured .box {
-  background: #FFF;
-  padding: 1.4em;
-  font-size: 0.95em;
-  border-radius: 5px;
+  & .divider {
+    border-bottom: variables.$border;
+  }
+  
+  & .box {
+    background: variables.$white;
+    padding: 1.4em;
+    font-size: 0.95em;
+    border-radius: 5px;
+  }
 }
 
 .balloon {
@@ -496,13 +472,13 @@ ul.style5 li {
   border-radius: 5px;
   line-height: 180%;
   font-size: 1.2em;
-  color: #333;
+  color: variables.$gray;
+
+  & strong {
+    color: variables.$gray !important;
+  }
 }
 
-.ballon-bgbtm {
+.balloon-bgbtm {
   height: 1.87em;
-}
-
-.balloon strong {
-  color: #333 !important;
 }
